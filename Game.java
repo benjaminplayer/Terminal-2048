@@ -10,11 +10,23 @@ public class Game {
         initBoard(board);
         System.out.println();
         System.out.println();
-        /* 
-        board[2][0] = 2;
+        /*
+        board[0][0] = 32;
+        board[0][1] = 2;
+        board[0][2] = 4;
+        board[0][3] = 2;
+        board[1][0] = 2;
+        board[1][1] = 32;
+        board[1][2] = 8;
+        board[1][3] = 64;
+        board[2][0] = 8;
+        board[2][1] = 4;
+        board[2][2] = 32;
+        board[2][3] = 2;
         board[3][0] = 2;
-        board[2][0] = 2;
-        board[1][0] = 4;*/
+        board[3][1] = 128;
+        board[3][2] = 2;
+        board[3][3] = 4;*/
         print(board);
 
         Scanner in = new Scanner(System.in);
@@ -121,7 +133,7 @@ public class Game {
             shiftRight(board);
         }
 
-        newNumber(board);
+        //newNumber(board);
     }
 
     private static void shiftLeft(int[][] board) {
@@ -153,6 +165,11 @@ public class Game {
                 }
             }
         }
+
+        System.out.println("Print after shift:");
+        print(board);
+        System.out.println();
+
     }
 
     private static void shiftRight(int[][] board) {
@@ -171,25 +188,26 @@ public class Game {
             }
         }
 
-        for (int i = 0; i < board.length; i++) {
-            if (shiftIdx[i] == 3 && board[i][3] != 0) {
-                for (int j = shiftIdx[i] - 1; j >= 0; j--) {
-                    if (board[i][j] != 0 && shiftIdx[i] - 1 >= 0) {
-                        board[i][shiftIdx[i] - 1] = board[i][j];
-                        board[i][j] = 0;
-                        shiftIdx[i]--; // posodobi shift idx;
-                    }
-                }
+        System.out.println("Shift registers:");
+        print(shiftIdx);
+        System.out.println();
 
-            } else {
-                for (int j = shiftIdx[i]; j >= 0; j--) {
-                    if (board[i][j] != 0 && shiftIdx[i] != j) {
+        for (int i = 0; i < board.length; i++) {
+            for(int j = shiftIdx[i]; j >= 0; j--){
+                if(board[i][shiftIdx[i]] == 0){
+                    if (board[i][j] != 0 && j != shiftIdx[i]) {
                         board[i][shiftIdx[i]] = board[i][j];
                         board[i][j] = 0;
                         shiftIdx[i]--;
                     }
+                }else if(board[i][shiftIdx[i]] != 0){
+                    if(j-1 >= 0 && board[i][j - 1] !=0){
+                        board[i][shiftIdx[i] - 1] = board[i][j];
+                        board[i][j] = 0;
+                        shiftIdx[i]--; // posodobi shift idx;
+                        
+                    }
                 }
-
             }
         }
 
@@ -276,7 +294,7 @@ public class Game {
         if(dir == 1){
             for(int i = 0; i < board.length; i++){
                 for(int j = 0; j < board[i].length; j++){
-                    if(board[i][j] !=0 && board[i][j] == board[i][j+1]){
+                    if(j+1 < board[i].length && board[i][j] !=0 && board[i][j] == board[i][j+1]){
                         board[i][j + 1] = board[i][j] * 2;
                         board[i][j] = 0;
                         j++;
